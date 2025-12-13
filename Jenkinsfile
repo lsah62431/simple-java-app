@@ -24,14 +24,7 @@ pipeline {
         }
     }
 
-     post {
-    success {
-    slackSend channel: 'jenkins',
-              message: "Build Success - ${env.JOB_NAME} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)",
-              teamDomain: 'Jenkins-Training',
-              tokenCredentialId: 'slack-notfications'
-    }
-}
+
 
 }
    
