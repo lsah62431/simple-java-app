@@ -1,32 +1,21 @@
 pipeline {
-    agent any
-    environment {
-            JAVA_HOME = "/usr/lib/jvm/java-21-openjdk-amd64"
-            MAVEN_HOME = "/usr/share/maven"
-            PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:${env.PATH}"
+    agent {
+        docker {
+            image 'maven:3.9.9-eclipse-temurin-21'
+        }
     }
 
     stages {
-        stage('build') {
+        stage('Build') {
             steps {
-               sh 'mvn clean package'
+                sh 'mvn clean package'
             }
         }
 
-        stage('test') {
+        stage('Test') {
             steps {
-                echo "test in progress"
-            }
-        }
-
-        stage('deploy') {
-            steps {
-                echo "deploy in progress"
+                sh 'mvn test'
             }
         }
     }
-
-
-
 }
-   
