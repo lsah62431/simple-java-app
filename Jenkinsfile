@@ -25,6 +25,11 @@ pipeline {
         }
     }
 
+        post {
+  success {
+    slackSend channel: 'jenkins-slack', message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'Jenkins-Training', tokenCredentialId: 'jenkins-slack'
+  }
+}
 
 
 }
