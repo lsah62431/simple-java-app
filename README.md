@@ -6,4 +6,4 @@
 
 ### Run Tests
 ```mvn test```
-update and merge webhook
+update and merge webhook for push
