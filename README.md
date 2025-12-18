@@ -7,7 +7,3 @@
 ### Run Tests
 ```mvn test```
 update and merge webhook
-
-ييييي
-
-عح
