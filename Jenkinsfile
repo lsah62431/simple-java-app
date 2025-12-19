@@ -1,7 +1,7 @@
 pipeline {
 
     agent {
-        label 'aws-agent'
+        label 'agent-aws'
     }
 
     stages {
