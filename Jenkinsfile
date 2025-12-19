@@ -1,35 +1,45 @@
 pipeline {
-        agent {
-      label 'agent-aws'
+
+    agent {
+        label 'aws-agent'
     }
 
-   
-
     stages {
+
         stage('build') {
             steps {
-              sh 'mvn clean package'
+                script {
+                    sh 'docker build -t java-app .'
+                }
             }
         }
 
-        stage('test') {
+        stage('push') {
             steps {
-                echo "test in progress"
+                script {
+                    withCredentials([usernamePassword(
+                        credentialsId: 'docker-hub',
+                        passwordVariable: 'Password',
+                        usernameVariable: 'Username'
+                    )]) {
+
+                        sh 'docker login --username $Username --password $Password'
+                        sh 'docker tag java-app $Username/java-app'
+                        sh 'docker push $Username/java-app'
+                    }
+                }
             }
         }
 
         stage('deploy') {
             steps {
-                echo "deploy in progress"
+                script {
+                    
+                        sh 'kubectl apply -f ./k8s/deployment.yaml'
+                    }
+                }
             }
         }
+
     }
 
-        post {
-  success {
-    slackSend channel: 'jenkins-slack', message: "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'Jenkins-Training', tokenCredentialId: 'jenkins-slack'
-  }
-}
-
-
-}
